@@ -72,6 +72,10 @@ const STATIC_ASSETS = [
     'https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js'
 ];
 
+// Define cache names
+const STATIC_CACHE = CACHE_NAMES.static;
+const CACHE_NAME = CACHE_NAMES.dynamic;
+
 // Install Event
 self.addEventListener('install', event => {
     event.waitUntil(
