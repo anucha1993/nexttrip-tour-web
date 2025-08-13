@@ -84,9 +84,26 @@
         window.addEventListener('load', function() {
             // Initialize jQuery plugins after jQuery is loaded
             if (typeof jQuery !== 'undefined') {
-                // Your jQuery dependent code here
+                // Initialize daterangepicker
+                $('#daterange').daterangepicker({
+                    autoApply: true,
+                    locale: {
+                        format: 'DD/MM/YYYY',
+                        applyLabel: 'ตกลง',
+                        cancelLabel: 'ยกเลิก',
+                        fromLabel: 'จาก',
+                        toLabel: 'ถึง',
+                        customRangeLabel: 'เลือกช่วงวันที่',
+                        daysOfWeek: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+                        monthNames: [
+                            'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน',
+                            'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม',
+                            'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+                        ],
+                        firstDay: 0
+                    }
+                });
             }
-            
             // Register Service Worker only if browser supports it
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/sw.js', {
@@ -143,7 +160,7 @@
     @include('frontend.layout.inc_header')
 
     <!-- Schema.org markup for Tour Agency -->
-    <script type="application/ld+json">
+    {{-- <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "TravelAgency",
@@ -158,7 +175,7 @@
         "YOUR_LINE_URL"
       ]
     }
-    </script>
+    </script> --}}
 </head>
 
 <body class="bg-gray-50 font-kanit">
@@ -220,7 +237,66 @@
             </span>
         </button>
     </div>
-
+    
+<!-- Search Form Section -->
+<section class="bg-gray-50 dark:bg-gray-900 mt-[-10]">
+    <div class="relative w-full mx-auto max-w-screen-xl  md:p-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-orange-500 mb-6">ไปที่ไหนดี?</h2>
+            <form action="#" method="GET">
+                <div class="grid gap-6 md:grid-cols-4">
+                    <!-- Search Destination -->
+                    <div>
+                        <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ประเทศ, เมือง, สถานที่ท่องเที่ยว</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                </svg>
+                            </div>
+                            <input type="search" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full pl-10 p-2.5" placeholder="ค้นหา..." required>
+                        </div>
+                    </div>
+                    <!-- Date Range -->
+                    <div>
+                        <label for="daterange" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">วันเดินทาง</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+                                </svg>
+                            </div>
+                            <input type="text" id="daterange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full pl-10 p-2.5" placeholder="เลือกวันที่">
+                        </div>
+                    </div>
+                    <!-- Price Range -->
+                    <div>
+                        <label for="pricerange" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ช่วงราคา</label>
+                        <select id="pricerange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5">
+                            <option selected value="">ทั้งหมด</option>
+                            <option value="0-10000">ต่ำกว่า 10,000 บาท</option>
+                            <option value="10000-30000">10,000 - 30,000 บาท</option>
+                            <option value="30000-50000">30,000 - 50,000 บาท</option>
+                            <option value="50000-100000">50,000 - 100,000 บาท</option>
+                            <option value="100000+">100,000 บาท ขึ้นไป</option>
+                        </select>
+                    </div>
+                    <!-- Tour Code -->
+                    <div>
+                        <label for="tourcode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">รหัสทัวร์</label>
+                        <input type="text" id="tourcode" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5" placeholder="ระบุรหัสทัวร์">
+                    </div>
+                </div>
+                <!-- Search Button -->
+                <div class="mt-6 flex justify-center">
+                    <button type="submit" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium rounded-lg text-sm px-8 py-3">
+                        ค้นหาทัวร์
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 
 <!-- Gallery Section -->
 <section class="mx-auto max-w-7xl px-4 md:px-8 py-12">
