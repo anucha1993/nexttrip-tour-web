@@ -163,22 +163,8 @@
 
 <body class="bg-gray-50 font-kanit">
     @include('frontend.layout.inc_topmenu')
-    <div class="mt-30">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-         <br>
 
-
-    </div>
-
-
-
-    <div id="default-carousel" class="relative w-full mx-auto max-w-screen-xl mb-2" data-carousel="slide">
+    <div id="default-carousel" class="relative w-full mx-auto max-w-screen-xl " data-carousel="slide">
         <!-- Carousel wrapper -->
         <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
             <!-- Item 1 -->
@@ -343,23 +329,6 @@
       </a>
     </figure>
 
-    <!-- 6 -->
-    <figure class="relative overflow-hidden rounded-2xl ring-1 ring-black/5 shadow group">
-      <a href="/404">
-        <img
-          src="https://nexttripholiday.com/upload/country/image_banner03022025-22225402.jpeg"
-          alt="ทัวร์สวิตเซอร์แลนด์"
-          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
-          style="aspect-ratio:16/10"
-          loading="lazy" decoding="async">
-        <figcaption class="absolute inset-0 flex items-end justify-center pb-4">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
-          <span class="relative text-white text-lg md:text-xl font-bold  bg-orange-500 px-4 py-2 rounded-lg">
-            ทัวร์สวิตเซอร์แลนด์
-          </span>
-        </figcaption>
-      </a>
-    </figure>
 
   </div>
 </section>
