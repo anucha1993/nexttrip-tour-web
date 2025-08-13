@@ -1,6 +1,66 @@
-// Service Worker for NextTrip Tour
-const CACHE_NAME = 'nexttrip-cache-v1';
-const STATIC_CACHE = 'static-cache-v1';
+// Advanced Service Worker for NextTrip Tour
+const CACHE_VERSION = 'v2';
+const CACHE_NAMES = {
+    static: `static-${CACHE_VERSION}`,
+    dynamic: `dynamic-${CACHE_VERSION}`,
+    images: `images-${CACHE_VERSION}`
+};
+
+// Resources to cache immediately
+const STATIC_RESOURCES = [
+    '/',
+    '/css/critical.css',
+    '/js/critical.js',
+    '/images/hero-banner.jpg',
+    '/fonts/Sarabun-Regular.woff2'
+];
+
+// Cache strategies
+const CACHE_STRATEGIES = {
+    cacheFirst: async (request) => {
+        const cache = await caches.open(CACHE_NAMES.static);
+        const cachedResponse = await cache.match(request);
+        if (cachedResponse) return cachedResponse;
+        
+        try {
+            const networkResponse = await fetch(request);
+            cache.put(request, networkResponse.clone());
+            return networkResponse;
+        } catch (error) {
+            return new Response('Network error happened', {
+                status: 408,
+                headers: { 'Content-Type': 'text/plain' },
+            });
+        }
+    },
+    
+    networkFirst: async (request) => {
+        try {
+            const networkResponse = await fetch(request);
+            const cache = await caches.open(CACHE_NAMES.dynamic);
+            cache.put(request, networkResponse.clone());
+            return networkResponse;
+        } catch (error) {
+            const cachedResponse = await caches.match(request);
+            return cachedResponse || new Response('Network error happened', {
+                status: 408,
+                headers: { 'Content-Type': 'text/plain' },
+            });
+        }
+    },
+    
+    staleWhileRevalidate: async (request) => {
+        const cache = await caches.open(CACHE_NAMES.dynamic);
+        const cachedResponse = await cache.match(request);
+        
+        const networkResponsePromise = fetch(request).then(response => {
+            cache.put(request, response.clone());
+            return response;
+        });
+        
+        return cachedResponse || networkResponsePromise;
+    }
+};
 
 // Assets to cache
 const STATIC_ASSETS = [
