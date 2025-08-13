@@ -9,13 +9,21 @@
     <meta name="robots" content="index, follow">
     <title>NextTrip Tour - จองแพ็คเกจทัวร์ออนไลน์</title>
 
-    {{-- Fonts and CSS --}}
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet">
-
     {{-- Performance Optimizations --}}
-    <link rel="preconnect" href="//cdnjs.cloudflare.com">
-    <link rel="preconnect" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="//cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="//fonts.googleapis.com" crossorigin>
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    
+    {{-- Preload Critical Resources --}}
+    <link rel="modulepreload" href="/js/bundle.js">
+    <link rel="preload" as="style" href="{{ asset('css/app.css') }}">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css">
+    </noscript>
     
     <style>
         /* Critical CSS */
@@ -24,9 +32,43 @@
             opacity: 1 !important;
         }
         .hero-section { min-height: 60vh; }
+        
+        /* Image Loading Optimization */
+        img {
+            transition: opacity 0.3s ease-in-out;
+        }
+        img[data-src] {
+            opacity: 0;
+        }
+        img.lazyloaded {
+            opacity: 1;
+        }
+        .blur-load {
+            background-size: cover;
+            background-position: center;
+        }
     </style>
+    
+    {{-- Preload Critical Images --}}
+    <link rel="preload" as="image" href="/images/hero-banner.jpg" />
+    
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    {{-- Lazy Loading Script --}}
+    <script>
+        if ('loading' in HTMLImageElement.prototype) {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            images.forEach(img => {
+                img.src = img.dataset.src;
+            });
+        } else {
+            // Dynamically import the LazySizes library
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
+            document.body.appendChild(script);
+        }
+    </script>
+    
     @include('frontend.layout.inc_header')
 
     <!-- Schema.org markup for Tour Agency -->
@@ -144,7 +186,11 @@
     <figure class="lg:col-span-2 overflow-hidden rounded-2xl ring-1 ring-black/5 shadow">
         <a href="/404">
       <img
-        src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop"
+        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E"
+        data-src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop"
+        loading="lazy"
+        decoding="async"
+        class="lazyload"
         alt="Team discussion"
         width="1600" height="900"
         class="w-full h-full object-cover"
@@ -702,7 +748,7 @@
 
     @include('frontend.layout.inc_footer')
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js" defer></script>
 </body>
 
 </html>
