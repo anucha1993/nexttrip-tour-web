@@ -1,0 +1,34 @@
+/* Combined CSS for NextTrip Tour */
+
+/* Base Styles */
+@import 'bootstrap.min.css';
+@import 'layout.css';
+@import 'jquery-ui.css';
+@import 'slick-theme.css';
+@import 'slick.css';
+@import 'menu_nav.css';
+@import 'owl.carousel.min.css';
+@import 'owl.theme.default.css';
+
+/* Vendor Icons */
+@import url('https://cdn-uicons.flaticon.com/uicons-brands/css/uicons-brands.css');
+@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
+
+/* Custom Fonts */
+@font-face {
+    font-family: 'Sarabun';
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+}
+
+/* Critical CSS */
+body { 
+    font-family: 'Sarabun', sans-serif;
+    opacity: 1 !important;
+    background-color: #ffffff;
+}
+
+/* Performance Optimizations */
+img {
+    content-visibility: auto;
+}

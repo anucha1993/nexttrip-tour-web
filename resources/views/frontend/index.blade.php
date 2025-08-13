@@ -7,6 +7,8 @@
     <meta name="description" content="จองทัวร์ออนไลน์ แพ็คเกจท่องเที่ยวทั่วไทยและต่างประเทศ ราคาพิเศษ บริการประทับใจ">
     <meta name="keywords" content="จองทัวร์, ท่องเที่ยว, แพ็คเกจทัวร์, ทัวร์ไทย, ทัวร์ต่างประเทศ">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="manifest" href="/manifest.json">
     <title>NextTrip Tour - จองแพ็คเกจทัวร์ออนไลน์</title>
 
     {{-- Performance Optimizations --}}
@@ -15,19 +17,81 @@
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     
-    {{-- Preload Critical Resources --}}
-    <link rel="modulepreload" href="/js/bundle.js">
-    <link rel="preload" as="style" href="{{ asset('css/app.css') }}">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css">
-    </noscript>
-    
+    {{-- Inline Critical CSS --}}
     <style>
         /* Critical CSS */
         body { 
+            font-family: 'Sarabun', sans-serif;
+            opacity: 1 !important;
+            background-color: #ffffff;
+        }
+        .hero-section { min-height: 60vh; }
+        
+        /* Image Loading Optimization */
+        img {
+            transition: opacity 0.3s ease-in-out;
+        }
+        img[data-src] {
+            opacity: 0;
+        }
+        img.lazyloaded {
+            opacity: 1;
+        }
+        .blur-load {
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* First Paint Optimizations */
+        .header-placeholder {
+            height: 80px;
+            background: #ffffff;
+        }
+        .hero-placeholder {
+            height: 60vh;
+            background: #f3f4f6;
+        }
+    </style>
+    
+    {{-- Preload Critical Resources --}}
+    <link rel="modulepreload" href="/js/bundle.js">
+    <link rel="preload" as="style" href="{{ asset('css/app.css') }}">
+    
+    {{-- Async CSS Loading --}}
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}" media="print" onload="this.media='all'">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" media="print" onload="this.media='all'">
+    
+    {{-- Fallback for No JavaScript --}}
+    <noscript>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css">
+    </noscript>
+
+    {{-- Core JavaScript Dependencies --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    {{-- Service Worker Registration --}}
+    <script>
+        window.addEventListener('load', function() {
+            // Initialize jQuery plugins after jQuery is loaded
+            if (typeof jQuery !== 'undefined') {
+                // Your jQuery dependent code here
+            }
+            
+            // Register Service Worker only if browser supports it
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js', {
+                    scope: '/'
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+            }
+        });
+    </script>
+    <style>
+        {
             font-family: 'Sarabun', sans-serif;
             opacity: 1 !important;
         }
