@@ -14,6 +14,7 @@ return [
      * When using the default CacheRequestFilter this setting controls the
      * default number of minutes responses must be cached.
      */
+    
     'cache_lifetime_in_minutes' => 60 * 24 * 7,
 
     /*
